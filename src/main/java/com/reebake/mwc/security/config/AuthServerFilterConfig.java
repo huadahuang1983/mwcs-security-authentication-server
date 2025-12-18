@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -37,6 +38,7 @@ public class AuthServerFilterConfig {
     }
 
     @Bean
+    @Order(10)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http, LoginAuthenticationFilter loginAuthenticationFilter,
                                                    JwtLogoutSuccessHandler jwtLogoutSuccessHandler) throws Exception {
         log.info("config login authentication filter ...");
