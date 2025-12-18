@@ -65,6 +65,7 @@ public class AuthServerSecurityConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public LoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler(AuthenticationService authenticationService) {
         return new LoginAuthenticationSuccessHandler(authenticationService, objectMapper);
     }
