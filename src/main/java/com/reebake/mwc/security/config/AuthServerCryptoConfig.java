@@ -16,7 +16,7 @@ public class AuthServerCryptoConfig {
     @Bean
     @ConditionalOnMissingBean
     public KeyPair rsaKeyPair() {
-        String basePath = ".mwc", keyName="rsa";
+        String basePath = System.getProperty("user.home") + "/.mwc/rsa", keyName="jwt";
         KeyPair keyPair;
         if(!FileUtil.exist(basePath)) {
             try {
