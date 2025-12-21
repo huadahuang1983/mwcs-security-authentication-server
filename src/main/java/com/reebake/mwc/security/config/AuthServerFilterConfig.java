@@ -1,7 +1,7 @@
 package com.reebake.mwc.security.config;
 
 import com.reebake.mwc.security.filter.LoginAuthenticationFilter;
-import com.reebake.mwc.security.handler.JwtLogoutSuccessHandler;
+import com.reebake.mwc.security.handler.TokenLogoutSuccessHandler;
 import com.reebake.mwc.security.handler.LoginAuthenticationConverter;
 import com.reebake.mwc.security.handler.LoginAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class AuthServerFilterConfig {
     @Bean
     @Order(10)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http, LoginAuthenticationFilter loginAuthenticationFilter,
-                                                   JwtLogoutSuccessHandler jwtLogoutSuccessHandler) throws Exception {
+                                                   TokenLogoutSuccessHandler tokenLogoutSuccessHandler) throws Exception {
         log.info("config login authentication filter ...");
         http.securityMatcher("/api/auth/*")
             .csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
@@ -48,7 +48,7 @@ public class AuthServerFilterConfig {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/auth/*").permitAll()
                 .anyRequest().authenticated()
-            ).logout(logout -> logout.logoutUrl("/api/auth/logout").logoutSuccessHandler(jwtLogoutSuccessHandler))
+            ).logout(logout -> logout.logoutUrl("/api/auth/logout").logoutSuccessHandler(tokenLogoutSuccessHandler))
             ;
 
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

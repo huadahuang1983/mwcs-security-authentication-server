@@ -9,40 +9,42 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * 用户名登录认证令牌
+ * 短信验证码登录认证令牌
  */
 @Getter
-public class UsernameLoginAuthenticationToken extends AbstractAuthenticationToken {
+public class SmsLoginAuthenticationToken extends AbstractAuthenticationToken {
     private final Object principal;
     private Object credentials;
 
-    public UsernameLoginAuthenticationToken(Object principal, Object credentials) {
+    public SmsLoginAuthenticationToken(Object principal, Object credentials) {
         super(new HashSet<>());
         this.principal = principal;
         this.credentials = credentials;
         this.setAuthenticated(false);
     }
 
-    public UsernameLoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public SmsLoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
         super.setAuthenticated(true);
     }
 
-    public static UsernameLoginAuthenticationToken unauthenticated(Object principal, Object credentials) {
-        return new UsernameLoginAuthenticationToken(principal, credentials);
+    public static SmsLoginAuthenticationToken unauthenticated(Object principal, Object credentials) {
+        return new SmsLoginAuthenticationToken(principal, credentials);
     }
 
-    public static UsernameLoginAuthenticationToken authenticated(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
-        return new UsernameLoginAuthenticationToken(principal, credentials, authorities);
+    public static SmsLoginAuthenticationToken authenticated(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+        return new SmsLoginAuthenticationToken(principal, credentials, authorities);
     }
 
+    @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         Assert.isTrue(!isAuthenticated, "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         super.setAuthenticated(false);
     }
 
+    @Override
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;

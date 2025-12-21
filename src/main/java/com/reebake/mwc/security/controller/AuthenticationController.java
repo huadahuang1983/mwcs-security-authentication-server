@@ -3,8 +3,13 @@ package com.reebake.mwc.security.controller;
 import com.reebake.mwc.security.captcha.CaptchaService;
 import com.reebake.mwc.security.captcha.CaptchaProperties;
 import com.reebake.mwc.security.dto.AuthResponse;
+import com.reebake.mwc.security.dto.SmsCodeRequest;
+import com.reebake.mwc.security.dto.SmsCodeResponse;
+import com.reebake.mwc.security.sms.SmsProperties;
+import com.reebake.mwc.security.sms.SmsService;
 import com.reebake.mwc.security.service.AuthenticationService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +23,16 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final CaptchaService captchaService;
     private final CaptchaProperties captchaProperties;
+    private final SmsService smsService;
+    private final SmsProperties smsProperties;
 
-    public AuthenticationController(AuthenticationService authenticationService, CaptchaService captchaService, CaptchaProperties captchaProperties) {
+    public AuthenticationController(AuthenticationService authenticationService, CaptchaService captchaService, 
+                                   CaptchaProperties captchaProperties, SmsService smsService, SmsProperties smsProperties) {
         this.authenticationService = authenticationService;
         this.captchaService = captchaService;
         this.captchaProperties = captchaProperties;
+        this.smsService = smsService;
+        this.smsProperties = smsProperties;
     }
 
     @PostMapping("/refresh")
@@ -48,4 +58,23 @@ public class AuthenticationController {
                 .body(captchaInfo.captchaImage());
     }
 
+    @PostMapping("/send-sms-code")
+    public ResponseEntity<SmsCodeResponse> sendSmsCode(@RequestBody SmsCodeRequest smsCodeRequest) {
+        if (!smsProperties.isEnabled()) {
+            return ResponseEntity.status(403)
+                    .body(SmsCodeResponse.failure("sms captcha is not enabled"));
+        }
+
+        if(smsService.isInSendInterval(smsCodeRequest.getPhoneNumber())) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(SmsCodeResponse.failure("too many request."));
+        }
+        
+        boolean success = smsService.sendSmsCode(smsCodeRequest.getPhoneNumber());
+        if (success) {
+            return ResponseEntity.ok(SmsCodeResponse.success("sms code sent successfully"));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(SmsCodeResponse.failure("failed to send sms code, please try again later"));
+        }
+    }
 }

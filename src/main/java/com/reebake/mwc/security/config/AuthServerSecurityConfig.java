@@ -15,16 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-
 @Configuration
 @RequiredArgsConstructor
 public class AuthServerSecurityConfig {
     private final JwtProperties jwtProperties;
     private final ObjectMapper objectMapper;
-    private final RSAPrivateKey privateKey;
-    private final RSAPublicKey publicKey;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,24 +33,14 @@ public class AuthServerSecurityConfig {
     }
 
     @Bean
-    public JwtTokenGenerator jwtTokenGenerator() {
-        return new JwtTokenGenerator(jwtProperties, privateKey);
-    }
-
-    @Bean
     @ConditionalOnMissingBean
     public TokenBlacklist tokenBlacklist() {
         return new DefaultTokenBlacklist(jwtProperties);
     }
 
     @Bean
-    public JwtTokenValidator jwtTokenValidator() {
-        return new JwtTokenValidator(jwtProperties, publicKey);
-    }
-
-    @Bean
-    public JwtLogoutSuccessHandler jwtLogoutSuccessHandler(TokenBlacklist tokenBlacklist) {
-        return new JwtLogoutSuccessHandler(tokenBlacklist);
+    public TokenLogoutSuccessHandler tokenLogoutSuccessHandler(TokenBlacklist tokenBlacklist) {
+        return new TokenLogoutSuccessHandler(tokenBlacklist);
     }
 
     @Bean

@@ -6,6 +6,7 @@ import com.reebake.mwc.security.captcha.CaptchaStore;
 import com.reebake.mwc.security.captcha.impl.CaptchaServiceImpl;
 import com.reebake.mwc.security.captcha.impl.InMemoryCaptchaStore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * 注册验证码相关的Bean
  */
 @Configuration
+@EnableConfigurationProperties({CaptchaProperties.class})
 public class CaptchaConfig {
     
     /**

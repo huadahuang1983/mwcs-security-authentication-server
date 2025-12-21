@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
+public class TokenLogoutSuccessHandler implements LogoutSuccessHandler {
     private final TokenBlacklist tokenBlacklist;
 
     @Override
