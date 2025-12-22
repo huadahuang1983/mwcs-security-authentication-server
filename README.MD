@@ -1,8 +1,8 @@
-# MWC Security Authentication Server
+# MWCS Security Authentication Server
 
 ## 简介
 
-MWC Security Authentication Server是一个基于Spring Boot、Spring Security的登录认证服务组件，支持生成JWT格式Token，为其他应用提供安全的登录认证、登出和Token管理功能。
+MWCS Security Authentication Server是一个基于Spring Boot、Spring Security的登录认证服务组件，支持生成JWT格式Token，为其他应用提供安全的登录认证、登出和Token管理功能。
 
 ## 核心功能
 
@@ -22,8 +22,8 @@ MWC Security Authentication Server是一个基于Spring Boot、Spring Security�
 ## clone项目
 
 ```bash
-git clone https://github.com/huadahuang1983/mwc-security-authentication-server.git
-cd mwc-security-authentication-server
+git clone https://github.com/huadahuang1983/mwcs-security-authentication-server.git
+cd mwcs-security-authentication-server
 mvn clean install -Dmaven.test.skip=true
 ```
 
@@ -31,8 +31,8 @@ mvn clean install -Dmaven.test.skip=true
 
 ```xml
 <dependency>
-    <groupId>com.reebake.mwc.security</groupId>
-    <artifactId>mwc-security-authentication-server</artifactId>
+    <groupId>com.reebake.mwcs</groupId>
+    <artifactId>mwcs-security-authentication-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -41,7 +41,7 @@ mvn clean install -Dmaven.test.skip=true
 
 ### 1. 配置RSA密钥
 
-在应用启动时，确保RSA密钥已生成并正确加载，系统默认会生成RSA密钥对并存储到`.mwc/`目录下。密钥一旦生成请勿轻易变动导致登录认证失败。可以使用内置的`RsaUtil`工具类生成密钥。
+在应用启动时，确保RSA密钥已生成并正确加载，系统默认会生成RSA密钥对并存储到`.mwcs/rsa`目录下。密钥一旦生成请勿轻易变动导致登录认证失败。可以使用内置的`RsaUtil`工具类生成密钥。
 
 ### 2. 实现UserDetailsService
 
@@ -65,8 +65,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 ```properties
 # JWT配置
-mwc.jwt.issuer=您的签发者名称   # JWT签发者
-mwc.jwt.expiration-time-in-minutes=30    # 访问令牌有效期（分钟）
+mwcs.jwt.issuer=您的签发者名称   # JWT签发者
+mwcs.jwt.expiration-time-in-minutes=30    # 访问令牌有效期（分钟）
 ```
 
 ### 4. 启动应用
