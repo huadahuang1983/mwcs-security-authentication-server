@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 @Data
 public class User implements UserDetails {
@@ -14,7 +13,7 @@ public class User implements UserDetails {
     private String userId;
     private String username;
     private String password;
-    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private Collection<GrantedAuthority> authorities = new HashSet<>();
     private boolean enabled;
     private boolean accountNonExpired;
     private boolean accountNonLocked;

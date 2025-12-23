@@ -9,9 +9,12 @@ import com.reebake.mwcs.security.handler.TokenBlacklist;
 import com.reebake.mwcs.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -62,7 +65,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getUserId());
         claims.put("username", user.getUsername());
-        claims.put("authorities", user.getAuthorities());
+        List<String> roles = new ArrayList<>();
+        for(GrantedAuthority authority : user.getAuthorities()) {
+            roles.add(authority.getAuthority());
+        }
+        claims.put("authorities", roles);
         return claims;
     }
 }
